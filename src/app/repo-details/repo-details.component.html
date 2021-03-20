@@ -1,1 +1,14 @@
-<p>repo-details works!</p>
+<div class="details-container">
+  <div *ngIf="!loading" class="card">
+    <h3 class="card-header">{{ selectedRepo.name }}</h3>
+    <div class="card-body">
+      <p>{{ selectedRepo.description }}</p>
+      <h4>Contributors</h4>
+      <p>These are some contributors</p>
+    </div>
+  </div>
+  <button class="btn btn-primary">Go Back</button>
+  <div *ngIf="loading">
+    <h3>Loading...</h3>
+  </div>
+</div>

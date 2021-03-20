@@ -1,6 +1,7 @@
 <div class="list-container">
-  <div *ngIf="!loading"></div>
-  <app-repo [repo_list]="repoList"></app-repo>
+  <div *ngIf="!loading">
+    <app-repo [repo_list]="repoList"></app-repo>
+  </div>
   <div *ngIf="loading">
     <h3>Loading...</h3>
   </div>
