@@ -1,6 +1,7 @@
-<div class="card w-50" *ngFor="let repo of repoList">
-  <div class="card-body">
-    <h2 class="card-title">{{ repo.repoName }}</h2>
-    <p class="card-text">{{ repo.repoDescription }}</p>
+<div class="list-container">
+  <div *ngIf="!loading"></div>
+  <app-repo [repo_list]="repoList"></app-repo>
+  <div *ngIf="loading">
+    <h3>Loading...</h3>
   </div>
 </div>

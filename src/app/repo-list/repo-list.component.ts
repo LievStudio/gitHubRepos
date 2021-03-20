@@ -1,19 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Apollo, gql } from 'apollo-angular';
-import { Subscription } from 'rxjs';
 
-const GET_REPO_COUNT = gql`
-  {
-    search(query: "is:public", type: REPOSITORY, first: 50) {
-      repositoryCount
-      pageInfo {
-        endCursor
-        startCursor
-      }
-      edges {
-        node {
-          ... on Repository {
+const GET_REPOS = gql`
+  query {
+    repositoryOwner(login: "LievStudio") {
+      repositories(last: 10) {
+        edges {
+          node {
             name
+            description
           }
         }
       }
@@ -37,12 +32,16 @@ export class RepoListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.querySubscription = this.apollo
       .watchQuery<any>({
-        query: GET_REPO_COUNT,
+        query: GET_REPOS,
       })
       .valueChanges.subscribe(({ data, loading }) => {
         this.loading = loading;
-        console.log(data);
-        // this.repoList = data;
+        this.repoList = data.repositoryOwner.repositories.edges.map(
+          (repo: any) => {
+            return repo.node;
+          }
+        );
+        // console.log(data.repositoryOwner.repositories.edges);
       });
   }
 
