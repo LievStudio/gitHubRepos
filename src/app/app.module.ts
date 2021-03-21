@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule, Routes } from '@angular/router';
+import { NgxsModule } from '@ngxs/store';
 
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
@@ -7,8 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RepoListComponent } from './repo-list/repo-list.component';
 import { RepoComponent } from './repo-list/repo/repo.component';
 import { RepoDetailsComponent } from './repo-details/repo-details.component';
-
-import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   { path: '', component: RepoListComponent },
@@ -28,6 +28,7 @@ const routes: Routes = [
     GraphQLModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
+    NgxsModule.forRoot([]),
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -1,5 +1,5 @@
 export interface RepoModel {
-  __typename: string;
+  __typeName: string;
   name: string;
   description: string;
 }
