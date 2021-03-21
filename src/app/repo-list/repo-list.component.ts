@@ -22,7 +22,7 @@ const GET_REPOS = gql`
   styleUrls: ['./repo-list.component.scss'],
 })
 export class RepoListComponent implements OnInit, OnDestroy {
-  repoList: any;
+  repoList: any[] = [];
   loading: boolean = true;
 
   private querySubscription: any;

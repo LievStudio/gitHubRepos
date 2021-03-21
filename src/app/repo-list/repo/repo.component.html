@@ -1,8 +1,4 @@
-<div
-  class="card"
-  *ngFor="let repo of repo"
-  style="margin-bottom: 15px; cursor: pointer"
->
+<div class="card" style="margin-bottom: 15px; cursor: pointer">
   <div class="card-body">
     <h2 class="card-title">{{ repo.name }}</h2>
     <p *ngIf="!repo.description">No description for now</p>

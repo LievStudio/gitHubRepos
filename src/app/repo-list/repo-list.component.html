@@ -1,6 +1,10 @@
 <div class="list-container">
   <div *ngIf="!loading">
-    <app-repo [repo_list]="repoList"></app-repo>
+    <app-repo
+      *ngFor="let repo of repoList"
+      [repo_item]="repo"
+      [routerLink]="['repo', repo.name]"
+    ></app-repo>
   </div>
   <div *ngIf="loading">
     <h3>Loading...</h3>

@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class RepoComponent implements OnInit {
   repo: any;
 
-  @Input() set repo_list(repo: any) {
+  @Input() set repo_item(repo: any) {
     this.repo = repo;
   }
 
