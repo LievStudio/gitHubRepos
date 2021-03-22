@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Select } from '@ngxs/store';
 import { Apollo, gql } from 'apollo-angular';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { RepoModel } from '../models/repo.model';
+import { RepoState } from '../store/repo.state';
 
 @Component({
   selector: 'app-repo-details',
@@ -9,49 +11,61 @@ import { RepoModel } from '../models/repo.model';
   styleUrls: ['./repo-details.component.scss'],
 })
 export class RepoDetailsComponent implements OnInit, OnDestroy {
-  // selectedRepo has to be defined from ngxs store
-  selectedRepo: RepoModel = {
-    __typeName: 'Repository',
-    name: 'algorithms-data-structures',
-    description:
-      'Repo for js snippets that serve as reminders/examples for common algorithms, recursion, sorting and data structures',
-  };
+  @Select(RepoState.selectedRepo) private selectedRepo$!: Observable<string>;
 
-  contributors!: { name: string }[];
+  selectedRepoName!: string;
+  selectedRepoOwner!: string;
+  selectedRepoDesc: string = '';
+
+  issues!: { title: string; author: { login: string } }[];
+
+  error!: string | undefined;
 
   querySubscription!: Subscription;
-
-  query: any = gql`
-    query {
-      repository(name: "${this.selectedRepo.name}", owner: "LievStudio") {
-        collaborators(first: 10) {
-          edges {
-            node {
-              name
-            }
-          }
-        }
-      }
-    }
-  `;
 
   loading: boolean = true;
 
   constructor(private apollo: Apollo) {}
 
   ngOnInit(): void {
-    this.querySubscription = this.apollo
-      .watchQuery<any>({
-        query: this.query,
-      })
-      .valueChanges.subscribe(({ data, loading }) => {
-        this.loading = loading;
-        this.contributors = data.repository.collaborators.edges.map(
-          (contributor: any) => {
-            return contributor.node;
+    this.selectedRepo$.subscribe((repo: any) => {
+      this.selectedRepoName = repo.repoName;
+      this.selectedRepoOwner = repo.repoOwner;
+
+      console.log(this.selectedRepoName);
+
+      let query: any = gql`
+        query {
+          repository(name: "${this.selectedRepoName}", owner: "${this.selectedRepoOwner}") {
+            name
+            description
+            issues(first: 5) {
+              edges {
+                node {
+                  author {
+                    login
+                  }
+                  title
+                }
+              }
+            }
           }
-        );
-      });
+        }
+      `;
+
+      this.querySubscription = this.apollo
+        .watchQuery<any>({
+          query: query,
+        })
+        .valueChanges.subscribe(({ data, loading, error }) => {
+          this.loading = loading;
+          this.selectedRepoDesc = data.repository.description;
+          this.issues = data.repository.issues.edges.map((issue: any) => {
+            return issue.node;
+          });
+          this.error = error?.message;
+        });
+    });
   }
 
   ngOnDestroy(): void {

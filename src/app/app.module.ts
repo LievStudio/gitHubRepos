@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RepoListComponent } from './repo-list/repo-list.component';
 import { RepoComponent } from './repo-list/repo/repo.component';
 import { RepoDetailsComponent } from './repo-details/repo-details.component';
+import { RepoState } from './store/repo.state';
 
 const routes: Routes = [
   { path: '', component: RepoListComponent },
@@ -28,7 +29,7 @@ const routes: Routes = [
     GraphQLModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
-    NgxsModule.forRoot([]),
+    NgxsModule.forRoot([RepoState]),
   ],
   providers: [],
   bootstrap: [AppComponent],

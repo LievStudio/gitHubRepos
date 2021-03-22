@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngxs/store';
 import { RepoModel } from 'src/app/models/repo.model';
+import { SelectRepo } from 'src/app/store/repo.state';
 
 @Component({
   selector: 'app-repo',
@@ -13,7 +15,12 @@ export class RepoComponent implements OnInit {
     this.repo = repo;
   }
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {}
+
+  selectRepo(repo: RepoModel) {
+    console.log(repo.name);
+    this.store.dispatch(new SelectRepo(repo.name, repo.owner.login));
+  }
 }

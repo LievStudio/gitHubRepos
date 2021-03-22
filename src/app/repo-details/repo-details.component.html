@@ -1,16 +1,19 @@
 <div class="details-container">
   <div *ngIf="!loading">
     <div class="card">
-      <h3 class="card-header">{{ selectedRepo.name }}</h3>
+      <h3 class="card-header">{{ selectedRepoName }}</h3>
       <div class="card-body">
-        <p>{{ selectedRepo.description }}</p>
-        <h4>Contributors</h4>
-        <p *ngFor="let contributor of contributors">{{ contributor.name }}</p>
+        <p>{{ selectedRepoDesc }}</p>
+        <h4>Issues</h4>
+        <div *ngFor="let issue of issues">
+          <h5>{{ issue.title }}</h5>
+          <p>Author: {{ issue.author.login }}</p>
+        </div>
       </div>
     </div>
-    <button class="btn btn-primary" routerLink="/">Go Back</button>
   </div>
   <div *ngIf="loading">
     <h3>Loading...</h3>
   </div>
+  <button class="btn btn-primary" routerLink="/">Go Back</button>
 </div>

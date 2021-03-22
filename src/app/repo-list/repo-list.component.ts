@@ -11,6 +11,9 @@ const GET_REPOS = gql`
           ... on Repository {
             name
             description
+            owner {
+              login
+            }
           }
         }
       }
@@ -26,6 +29,7 @@ const GET_REPOS = gql`
 export class RepoListComponent implements OnInit, OnDestroy {
   repoList!: RepoModel[];
   loading: boolean = true;
+  error: string | undefined;
 
   private querySubscription!: Subscription;
 
@@ -36,11 +40,12 @@ export class RepoListComponent implements OnInit, OnDestroy {
       .watchQuery<any>({
         query: GET_REPOS,
       })
-      .valueChanges.subscribe(({ data, loading }) => {
+      .valueChanges.subscribe(({ data, loading, error }) => {
         this.loading = loading;
         this.repoList = data.search.edges.map((repo: any) => {
           return repo.node;
         });
+        this.error = error?.message;
         // console.log(data.search.edges);
       });
   }

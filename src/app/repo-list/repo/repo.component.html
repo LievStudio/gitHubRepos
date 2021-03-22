@@ -1,7 +1,12 @@
-<div class="card" style="margin-bottom: 15px; cursor: pointer">
+<div
+  class="card"
+  style="margin-bottom: 15px; cursor: pointer"
+  (click)="selectRepo(repo)"
+>
   <div class="card-body">
     <h2 class="card-title">{{ repo.name }}</h2>
     <p *ngIf="!repo.description">No description for now</p>
     <p *ngIf="repo.description" class="card-text">{{ repo.description }}</p>
+    <p>{{ repo.owner.login }}</p>
   </div>
 </div>

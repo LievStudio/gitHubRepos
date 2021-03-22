@@ -18,7 +18,7 @@ export function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {
   }));
 
   const auth = setContext((operation, context) => {
-    const token = 'c7f4ac3e587595896c4986b76631b1c8101e1300';
+    const token = '1ccbfbb5a953dc911149acec3c7a1b6b533be399';
 
     if (token === null) {
       return {};
