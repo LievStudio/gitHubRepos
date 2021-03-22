@@ -20,7 +20,6 @@ export class RepoComponent implements OnInit {
   ngOnInit(): void {}
 
   selectRepo(repo: RepoModel) {
-    console.log(repo.name);
     this.store.dispatch(new SelectRepo(repo.name, repo.owner.login));
   }
 }

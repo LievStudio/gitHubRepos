@@ -13,30 +13,33 @@ import { RepoState } from '../store/repo.state';
 export class RepoDetailsComponent implements OnInit, OnDestroy {
   @Select(RepoState.selectedRepo) private selectedRepo$!: Observable<string>;
 
-  selectedRepoName!: string;
-  selectedRepoOwner!: string;
-  selectedRepoDesc: string = '';
+  selectedRepo: RepoModel = {
+    __typeName: '',
+    name: '',
+    description: '',
+    owner: { login: '' },
+  };
 
   issues!: { title: string; author: { login: string } }[];
 
-  error!: string | undefined;
+  error: string | undefined;
 
   querySubscription!: Subscription;
 
-  loading: boolean = true;
+  loading!: boolean;
 
   constructor(private apollo: Apollo) {}
 
   ngOnInit(): void {
     this.selectedRepo$.subscribe((repo: any) => {
-      this.selectedRepoName = repo.repoName;
-      this.selectedRepoOwner = repo.repoOwner;
+      this.selectedRepo.name = repo.repoName;
+      this.selectedRepo.owner.login = repo.repoOwner;
 
-      console.log(this.selectedRepoName);
+      console.log(this.selectedRepo);
 
       let query: any = gql`
         query {
-          repository(name: "${this.selectedRepoName}", owner: "${this.selectedRepoOwner}") {
+          repository(name: "${this.selectedRepo.name}", owner: "${this.selectedRepo.owner.login}") {
             name
             description
             issues(first: 5) {
@@ -59,7 +62,7 @@ export class RepoDetailsComponent implements OnInit, OnDestroy {
         })
         .valueChanges.subscribe(({ data, loading, error }) => {
           this.loading = loading;
-          this.selectedRepoDesc = data.repository.description;
+          this.selectedRepo.description = data.repository.description;
           this.issues = data.repository.issues.edges.map((issue: any) => {
             return issue.node;
           });
