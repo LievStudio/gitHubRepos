@@ -5,7 +5,7 @@ import { RepoModel } from '../models/repo.model';
 
 const GET_REPOS = gql`
   {
-    search(type: REPOSITORY, query: "GraphQL", first: 10) {
+    search(type: REPOSITORY, query: "GraphQL", first: 25) {
       edges {
         node {
           ... on Repository {

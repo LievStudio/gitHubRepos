@@ -18,8 +18,13 @@ export class SelectRepo {
 @Injectable()
 export class RepoState {
   @Selector()
-  static selectedRepo(state: RepoStateModel) {
+  static selectedRepo(state: RepoStateModel): RepoStateModel {
     return state;
+  }
+
+  @Selector()
+  static isRepoSelected(state: RepoStateModel): boolean {
+    return state.repoName.length > 0;
   }
 
   @Action(SelectRepo)

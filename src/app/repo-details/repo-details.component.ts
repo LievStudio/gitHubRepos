@@ -3,7 +3,8 @@ import { Select } from '@ngxs/store';
 import { Apollo, gql } from 'apollo-angular';
 import { Subscription, Observable } from 'rxjs';
 import { RepoModel } from '../models/repo.model';
-import { RepoState } from '../store/repo.state';
+import { IssueModel } from '../models/issue.model';
+import { RepoState, RepoStateModel } from '../store/repo.state';
 
 @Component({
   selector: 'app-repo-details',
@@ -11,7 +12,8 @@ import { RepoState } from '../store/repo.state';
   styleUrls: ['./repo-details.component.scss'],
 })
 export class RepoDetailsComponent implements OnInit, OnDestroy {
-  @Select(RepoState.selectedRepo) private selectedRepo$!: Observable<string>;
+  @Select(RepoState.selectedRepo)
+  private selectedRepo$!: Observable<RepoStateModel>;
 
   selectedRepo: RepoModel = {
     __typeName: '',
@@ -20,7 +22,7 @@ export class RepoDetailsComponent implements OnInit, OnDestroy {
     owner: { login: '' },
   };
 
-  issues!: { title: string; author: { login: string } }[];
+  issues!: IssueModel[];
 
   error: string | undefined;
 
@@ -31,11 +33,9 @@ export class RepoDetailsComponent implements OnInit, OnDestroy {
   constructor(private apollo: Apollo) {}
 
   ngOnInit(): void {
-    this.selectedRepo$.subscribe((repo: any) => {
+    this.selectedRepo$.subscribe((repo: RepoStateModel) => {
       this.selectedRepo.name = repo.repoName;
       this.selectedRepo.owner.login = repo.repoOwner;
-
-      console.log(this.selectedRepo);
 
       let query: any = gql`
         query {
