@@ -1,3 +1,7 @@
+# Important note to have App running normally
+This small app uses Github's GraphQL API to query public GraphQL related repos and its issues. The GraphQL API requires authentication to be used unlike the REST API that used to have public capabilities. Since this app currently doesn't have an interface to authenticate to Github I am currently using a Personal Access Token generated in my personal account, hard-coding it in the graphql module to make the application be authenticated.
+Github can recognize automatically a Personal Access Token hard-coded in an application and revoke access to that PAT so this uploaded version of the code requires a PAT hard-coded once it's cloned locally.
+
 # GitHubRepos
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.5.
